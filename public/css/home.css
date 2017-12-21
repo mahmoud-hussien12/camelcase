@@ -1,0 +1,14 @@
+ul.products{
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    width: 90%;
+    height: 90%;
+
+}
+ul.products li{
+    display: inline-block;
+    width: 300px;
+    height: 300px;
+    margin: 5px;
+}
