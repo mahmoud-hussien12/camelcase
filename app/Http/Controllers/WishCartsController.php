@@ -77,11 +77,13 @@ class WishCartsController extends Controller
     public function update(Request $request, $id)
     {
         //
-        $cart = EntityManager::find('App\WishListCart', $request->user_id);
+        $cart = EntityManager::getRepository('App\WishListCart')->findBy(array("user"=>Auth::user()->getAuthIdentifier()));
+        //$cart = EntityManager::find('App\WishListCart', $request->user_id);
         $product = EntityManager::find('App\Product', $id);
-        if($cart){
-            $cart->addProduct($product);
-            EntityManager::persist($cart);
+        if(count($cart)){
+            $c = $cart[0];
+            $c->addProduct($product);
+            EntityManager::persist($c);
             EntityManager::flush();
         }else{
             $cart = new WishListCart();

@@ -91,7 +91,6 @@ class OrderCartsController extends Controller
         }
         if(count($cart)){
             $c = $cart[0];
-
             $c->setOrderCartProducts();
             EntityManager::detach($c);
             $c->addProduct($product);
