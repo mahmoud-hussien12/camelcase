@@ -87,6 +87,7 @@ class WishCartsController extends Controller
             EntityManager::flush();
         }else{
             $cart = new WishListCart();
+            $cart->setUser(Auth::user());
             $cart->addProduct($product);
             EntityManager::persist($cart);
             EntityManager::flush();

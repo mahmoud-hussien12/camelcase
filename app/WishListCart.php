@@ -30,11 +30,32 @@ class WishListCart extends Cart
      * )
      */
     protected $products;
+    /**
+     * @ORM\OneToOne(targetEntity="User", mappedBy="wish_carts")
+     * @ORM\JoinColumn(name="user_id", referencedColumnName="id")
+     * @var User
+     */
+    protected $user;
     function __construct()
     {
         $this->products = new ArrayCollection;
     }
 
+    /**
+     * @return User
+     */
+    public function getUser()
+    {
+        return $this->user;
+    }
+
+    /**
+     * @param User $user
+     */
+    public function setUser($user)
+    {
+        $this->user = $user;
+    }
     /**
      * @return Product[]|\Doctrine\Common\Collections\Collection
      */
