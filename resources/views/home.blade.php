@@ -27,7 +27,7 @@
                                             </div>
                                         </a>
                                         <button ng-click="addToOrderCart('{{$product->getId()}}', '{{csrf_token()}}', '{{Auth::user()->id}}');">Add to Cart</button>
-                                        like:<input type="checkbox" id = "like" ng-click="addToWishCart('{{$product->getId()}}', '{{csrf_token()}}', '{{Auth::user()->id}}');"/>
+                                        like:<input type="checkbox" id="{{"like".$product->getId()}}" ng-click="addToWishCart('{{$product->getId()}}', '{{csrf_token()}}', '{{Auth::user()->id}}', '{{"like".$product->getId()}}');"/>
                                     </div>
                                 </div>
                             </div>
@@ -35,7 +35,7 @@
                         @endforeach
                         </ul>
                 </div>
-                <form action="/ordercarts/5" method="POST">
+                <form action="/wishcarts/5" method="POST">
                     <input type="hidden" name="_method" value="PUT">
                     {{csrf_field()}}
                     <input type="hidden" name="user_id" value="1">

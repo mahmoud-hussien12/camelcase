@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Product;
 use App\WishListCart;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use LaravelDoctrine\ORM\Facades\EntityManager;
 
 class WishCartsController extends Controller
@@ -85,12 +86,14 @@ class WishCartsController extends Controller
             $c->addProduct($product);
             EntityManager::persist($c);
             EntityManager::flush();
+            return response()->json(array("text"=>"added"));
         }else{
             $cart = new WishListCart();
             $cart->setUser(Auth::user());
             $cart->addProduct($product);
             EntityManager::persist($cart);
             EntityManager::flush();
+            return response()->json(array("text"=>"created"));
         }
     }
 

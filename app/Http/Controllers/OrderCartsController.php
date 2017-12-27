@@ -52,8 +52,8 @@ class OrderCartsController extends Controller
     public function show($id)
     {
         //
-        $cart = EntityManager::find('App\OrderCart', $id);
-        $products = $cart->getOrderCartProducts();
+        $cart = EntityManager::getRepository('App\OrderCart')->findBy(array("user"=>Auth::user()->getAuthIdentifier()));
+        $products = $cart[0]->setOrderCartProducts();
         $type = "order";
         return view("cartProducts", compact('products', 'type'));
     }
@@ -97,7 +97,7 @@ class OrderCartsController extends Controller
             $c->setTotalPrice($c->getTotalPrice()+$price);
             EntityManager::merge($c);
             EntityManager::flush();
-            return response()->json(array("text"=>$c->getProductArr()[0]->unit));
+            return response()->json(array("text"=>"added"));
         }else{
 
             $cart = new OrderCart();

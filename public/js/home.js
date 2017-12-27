@@ -16,7 +16,7 @@ var app = angular.module('app', [])
             contentType: false,
             dataType: "json",
             success: function (data) {
-                alert(data.mn);
+                alert(data.text);
             },
             error: function (data, err, status) {
                 alert(status);
@@ -24,23 +24,28 @@ var app = angular.module('app', [])
             async: false
         });
     };
-    $scope.addToWishCart = function (id, token, user_id) {
-        if($("#like").checked){
-            $.ajax({
-                type: "PUT",
-                url: "/wishcarts/"+id+"?_token="+token+"&user_id="+user_id,
-                processData: false,
-                contentType: false,
-                dataType: "json",
-                success: function (data) {
-                    alert(data);
-                },
-                error: function (data, err, status) {
-                },
-                async: false
-            });
-        }else{
+    $scope.addToWishCart = function (id, token, user_id, element_id) {
+        $(document).ready(function () {
 
-        }
+            if($("#"+element_id).is(":checked")){
+                alert($("#"+element_id).is(":checked"));
+                $.ajax({
+                    type: "PUT",
+                    url: "/wishcarts/"+id+"?_token="+token+"&user_id="+user_id,
+                    processData: false,
+                    contentType: false,
+                    dataType: "json",
+                    success: function (data) {
+                        alert(data.text);
+                    },
+                    error: function (data, err, status) {
+                        alert(status);
+                    },
+                    async: false
+                });
+            }else{
+
+            }
+        });
     };
 });

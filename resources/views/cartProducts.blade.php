@@ -9,7 +9,8 @@
             @endforeach
         @else
             @foreach($products as $product)
-                {{$product->product_id}}
+                {{$product->getProduct()-> getName()}}
+                {{$product->getProduct()-> getPrice()}}
             @endforeach
         @endif
     </div>

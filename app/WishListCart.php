@@ -75,4 +75,7 @@ class WishListCart extends Cart
             $this->products->remove($index);
         }
     }
+    public function emptyProducts(){
+        $this->products = new ArrayCollection;
+    }
 }
