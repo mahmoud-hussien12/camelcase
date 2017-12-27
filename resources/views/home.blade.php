@@ -35,6 +35,12 @@
                         @endforeach
                         </ul>
                 </div>
+                <form action="/ordercarts/5" method="POST">
+                    <input type="hidden" name="_method" value="PUT">
+                    {{csrf_field()}}
+                    <input type="hidden" name="user_id" value="1">
+                    <input type="submit">
+                </form>
             </div>
         </div>
     </div>

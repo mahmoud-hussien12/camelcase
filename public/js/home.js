@@ -16,9 +16,10 @@ var app = angular.module('app', [])
             contentType: false,
             dataType: "json",
             success: function (data) {
-                alert(data);
+                alert(data.mn);
             },
             error: function (data, err, status) {
+                alert(status);
             },
             async: false
         });

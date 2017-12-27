@@ -2,6 +2,7 @@
 
 namespace App\Providers;
 
+use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
@@ -14,6 +15,8 @@ class AppServiceProvider extends ServiceProvider
     public function boot()
     {
         //
+        \Doctrine\Common\Annotations\AnnotationReader::addGlobalIgnoredName('mixin');
+        Schema::defaultStringLength(191);
     }
 
     /**
@@ -25,4 +28,5 @@ class AppServiceProvider extends ServiceProvider
     {
         //
     }
+
 }
