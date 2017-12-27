@@ -51,8 +51,8 @@ class WishCartsController extends Controller
     {
         //
 
-        $cart = EntityManager::find('App\WishListCart', $id);
-        $products = $cart->getProducts();
+        $cart = EntityManager::getRepository('App\WishListCart')->findBy(array("user"=>Auth::user()->getAuthIdentifier()));
+        $products = $cart[0]->getProducts();
         $type = "wish";
         return view("cartProducts", compact('products', 'type'));
     }
