@@ -127,4 +127,7 @@ class OrderCart extends Cart
             $i++;
         }
     }
+    public function emptyProducts(){
+        $this->orderCartProducts = new ArrayCollection;
+    }
 }
