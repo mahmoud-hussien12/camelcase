@@ -27,7 +27,12 @@ class Order
      * @ORM\Column(type="float")
      */
     protected $total_price;
-
+    /**
+     * @ORM\OneToOne(targetEntity="User", mappedBy="orders")
+     * @ORM\JoinColumn(name="user_id", referencedColumnName="id")
+     * @var User
+     */
+    protected $user;
     /**
      * @param mixed $total_price
      */
@@ -41,6 +46,21 @@ class Order
         $this->orderProducts = new ArrayCollection;
     }
 
+    /**
+     * @param User $user
+     */
+    public function setUser($user)
+    {
+        $this->user = $user;
+    }
+
+    /**
+     * @return User
+     */
+    public function getUser()
+    {
+        return $this->user;
+    }
     public function setTotalPrice($total_price)
     {
         $this->total_price = $total_price;

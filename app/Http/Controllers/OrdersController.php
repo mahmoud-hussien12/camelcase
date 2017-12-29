@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Order;
 use Illuminate\Http\Request;
 
 class OrdersController extends Controller
@@ -35,6 +36,12 @@ class OrdersController extends Controller
     public function store(Request $request)
     {
         //
+        $carts = EntityManager::getRepository('App\OrderCart')->findBy(array("user"=>Auth::user()->getAuthIdentifier()));
+        $cart = $carts[0];
+        $order = new Order();
+        $order->setTotalPrice($cart->getTotalPrice());
+        //foreach ()
+        //$order->addProduct();
     }
 
     /**

@@ -12,6 +12,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 use \Doctrine\Common\Annotations\Annotation;
 use Illuminate\Support\Facades\DB;
 use LaravelDoctrine\ORM\Facades\EntityManager;
+use App\Cart;
 
 /**
  * @ORM\Entity
@@ -25,7 +26,7 @@ class OrderCart extends Cart
      */
     protected $total_price;
     /**
-     * @ORM\OneToMany(targetEntity="OrderCartProduct", mappedBy="order_carts", cascade={"persist"})
+     * @ORM\OneToMany(targetEntity="OrderCartProduct", mappedBy="order_carts", cascade={"persist", "detach"})
      * @var \Doctrine\Common\Collections\Collection|OrderCartProduct[]
      */
     protected $orderCartProducts;
@@ -40,7 +41,6 @@ class OrderCart extends Cart
         $this->orderCartProducts = new ArrayCollection;
         $this->total_price = 0.0;
     }
-
     /**
      * @param mixed $total_price
      */
@@ -72,44 +72,39 @@ class OrderCart extends Cart
     {
         $this->user = $user;
     }
+
     /**
-     * @return OrderCartProduct[]|ArrayCollection
+     * @return OrderCartProduct[]|\Doctrine\Common\Collections\Collection
      */
-    public function getOrderCartProducts()
-    {
-        $result  = DB::select("SELECT * FROM `order_cart_products` WHERE `cart_id`=?", [$this->id]);
-        return $result;
-        //return $this->orderCartProducts;
-    }
-    public function getProductArr(){
-        return $this->orderCartProducts;
-    }
-    public function setOrderCartProducts(){
+    public function getOrderCartProducts(){
+
+        EntityManager::getRepository('App\Product')->findAll();
+        $array = EntityManager::getRepository('App\OrderCartProduct')->findBy(array('cart'=>$this->id));
         $this->orderCartProducts = new ArrayCollection;
-        $res = $this->getOrderCartProducts();
-        $product = new Product();
-        foreach ($res as $p){
-            $product = EntityManager::find('App\Product', $p->product_id);
-            $this->orderCartProducts->add(new OrderCartProduct($this, $product, $p->unit));
+        foreach ($array as $orderCartProduct){
+            $this->orderCartProducts->add($orderCartProduct);
         }
+
         return $this->orderCartProducts;
     }
+
     public function addProduct(Product $product){
-        if(count($this->orderCartProducts) <= 0){
-            $this->orderCartProducts->add(new OrderCartProduct($this, $product, 1));
-        }else{
+
+        if($this->orderCartProducts->isEmpty()){//if array is empty
+            $orderCartProduct = new OrderCartProduct($this, $product, 1);
+            $this->orderCartProducts->add($orderCartProduct);
+        }else{//if product already exist increment unit
             $noChange = true;
             $index = 0;
             foreach ($this->orderCartProducts as $p){
                 if($p->getProduct()->getId() == $product->getId()){
-                    //$p->unit += 1;
                     $this->orderCartProducts[$index]->unit += 1;
                     $noChange = false;
                     break;
                 }
                 $index++;
             }
-            if($noChange){
+            if($noChange){//if product is not exist
                 $this->orderCartProducts->add(new OrderCartProduct($this, $product, 1));
             }
         }

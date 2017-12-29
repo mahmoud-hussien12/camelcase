@@ -23,11 +23,13 @@ class OrderCartProduct
     protected $id;
     /**
      * @ORM\ManyToOne(targetEntity="Product", inversedBy="order_cart_products")
+     * @ORM\JoinColumn(name="product_id", referencedColumnName="id")
      * @var Product
      */
     protected $product;
     /**
      * @ORM\ManyToOne(targetEntity="OrderCart", inversedBy="order_cart_products")
+     * @ORM\JoinColumn(name="cart_id", referencedColumnName="id")
      * @var OrderCart
      */
     protected $cart;
@@ -47,5 +49,37 @@ class OrderCartProduct
     public function getProduct()
     {
         return $this->product;
+    }
+
+    /**
+     * @param mixed $id
+     */
+    public function setId($id)
+    {
+        $this->id = $id;
+    }
+
+    /**
+     * @param OrderCart $cart
+     */
+    public function setCart($cart)
+    {
+        $this->cart = $cart;
+    }
+
+    /**
+     * @return OrderCart
+     */
+    public function getCart()
+    {
+        return $this->cart;
+    }
+
+    /**
+     * @param Product $product
+     */
+    public function setProduct($product)
+    {
+        $this->product = $product;
     }
 }

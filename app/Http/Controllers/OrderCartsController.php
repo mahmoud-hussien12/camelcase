@@ -53,7 +53,7 @@ class OrderCartsController extends Controller
     {
         //
         $cart = EntityManager::getRepository('App\OrderCart')->findBy(array("user"=>Auth::user()->getAuthIdentifier()));
-        $products = $cart[0]->setOrderCartProducts();
+        $products = $cart[0]->getOrderCartProducts();
         $type = "order";
         return view("cartProducts", compact('products', 'type'));
     }
@@ -91,15 +91,20 @@ class OrderCartsController extends Controller
         }
         if(count($cart)){
             $c = $cart[0];
-            $c->setOrderCartProducts();
+            $arr = $c->getOrderCartProducts();
             EntityManager::detach($c);
             $c->addProduct($product);
             $c->setTotalPrice($c->getTotalPrice()+$price);
+
             EntityManager::merge($c);
+            foreach ($arr as $orderCartProduct){
+                EntityManager::merge($orderCartProduct);
+            }
+
             EntityManager::flush();
+
             return response()->json(array("text"=>"added"));
         }else{
-
             $cart = new OrderCart();
             $cart->setTotalPrice($price);
             $cart->setUser(Auth::user());
@@ -109,7 +114,6 @@ class OrderCartsController extends Controller
             return response()->json(array("text"=>"created"));
         }
     }
-
     /**
      * Remove the specified resource from storage.
      *

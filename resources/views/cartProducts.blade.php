@@ -41,6 +41,10 @@
                     </li>
                 @endforeach
             </ul>
+            <form action="/orders" method="POST">
+                {{csrf_field()}}
+                <input type="submit" value="order">
+            </form>
         @endif
     </div>
 @endsection
