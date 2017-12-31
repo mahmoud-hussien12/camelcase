@@ -28,7 +28,6 @@ var app = angular.module('app', [])
         $(document).ready(function () {
 
             if($("#"+element_id).is(":checked")){
-                alert($("#"+element_id).is(":checked"));
                 $.ajax({
                     type: "PUT",
                     url: "/wishcarts/"+id+"?_token="+token+"&user_id="+user_id,
@@ -48,4 +47,21 @@ var app = angular.module('app', [])
             }
         });
     };
+    $scope.removeWishProduct = function (id, token) {
+        alert("nnn");
+        $.ajax({
+            type: "DELETE",
+            url: "/wishcarts/"+id+"?_token="+token,
+            processData: false,
+            contentType: false,
+            dataType: "json",
+            success: function (data) {
+                alert(data.text);
+            },
+            error: function (data, err, status) {
+                alert(status);
+            },
+            async: false
+        });
+    }
 });

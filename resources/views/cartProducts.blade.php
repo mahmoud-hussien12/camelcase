@@ -10,7 +10,7 @@
                         <div class="row">
                             <div class="col-md-4">
                                 <div class="thumbnail">
-                                    <a ng-click="removeProduct();"><i class="glyphicon glyphicon-remove"></i></a>
+                                    <a ng-click="removeWishProduct('{{$product->getId()}}', '{{csrf_token()}}');"><i class="glyphicon glyphicon-remove"></i></a>
                                     <a href="http://via.placeholder.com/150" target="_blank">
                                         <img src="http://via.placeholder.com/150" alt="Lights" style="width:100%">
                                         <div class="caption">
@@ -23,6 +23,10 @@
                     </li>
                 @endforeach
             </ul>
+            <form action="/wishcarts/{{Auth::user()->id}}/edit" method="GET">
+                {{csrf_field()}}
+                <input type="submit" value="empty">
+            </form>
         @else
             <ul class="products">
                 @foreach($products as $product)

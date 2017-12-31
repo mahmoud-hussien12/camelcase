@@ -51,12 +51,6 @@ class OrdersController extends Controller
         EntityManager::persist($order);
         EntityManager::flush();
         $cart->emptyProducts();
-        EntityManager::merge($cart);
-        $orderCartProducts = $cart->getOrderCartProducts();
-        foreach ($orderCartProducts as $orderCartProduct){
-            EntityManager::remove($orderCartProduct);
-        }
-        EntityManager::flush();
         return view('bill', compact('order'));
         //
     }

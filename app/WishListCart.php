@@ -9,6 +9,8 @@
 namespace App;
 use Doctrine\ORM\Mapping AS ORM;
 use Doctrine\Common\Collections\ArrayCollection;
+use LaravelDoctrine\ORM\Facades\EntityManager;
+
 /**
  * @ORM\Entity
  * @ORM\Table(name="wish_carts")
@@ -77,5 +79,7 @@ class WishListCart extends Cart
     }
     public function emptyProducts(){
         $this->products = new ArrayCollection;
+        EntityManager::merge($this);
+        EntityManager::flush();
     }
 }

@@ -125,5 +125,10 @@ class OrderCart extends Cart
     public function emptyProducts(){
         $this->orderCartProducts = new ArrayCollection;
         $this->total_price = 0.0;
+        EntityManager::merge($this);
+        foreach ($this->getOrderCartProducts() as $orderCartProduct){
+            EntityManager::remove($orderCartProduct);
+        }
+        EntityManager::flush();
     }
 }

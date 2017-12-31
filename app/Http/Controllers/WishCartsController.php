@@ -66,6 +66,11 @@ class WishCartsController extends Controller
     public function edit($id)
     {
         //
+        $cart = EntityManager::getRepository('App\WishListCart')->findBy(array("user"=>Auth::user()->getAuthIdentifier()));
+        $cart[0]->emptyProducts();
+        $products = $cart[0]->getProducts();
+        $type = "wish";
+        return view("cartProducts", compact('products', 'type'));
     }
 
     /**
@@ -106,5 +111,6 @@ class WishCartsController extends Controller
     public function destroy($id)
     {
         //
+        return "jjj";
     }
 }
