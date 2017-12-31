@@ -75,6 +75,8 @@ class WishListCart extends Cart
         if($this->products->contains($product)) {
             $index = $this->products->indexOf($product);
             $this->products->remove($index);
+            EntityManager::merge($this);
+            EntityManager::flush();
         }
     }
     public function emptyProducts(){

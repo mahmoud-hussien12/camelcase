@@ -67,6 +67,11 @@ class OrderCartsController extends Controller
     public function edit($id)
     {
         //
+        $cart = EntityManager::getRepository('App\OrderCart')->findBy(array("user"=>Auth::user()->getAuthIdentifier()));
+        $cart[0]->emptyProducts();
+        $products = $cart[0]->getOrderCartProducts();
+        $type = "order";
+        return view("cartProducts", compact('products', 'type'));
     }
 
     /**
@@ -123,5 +128,10 @@ class OrderCartsController extends Controller
     public function destroy($id)
     {
         //
+        $product = EntityManager::find('App\Product', $id);
+        $carts = EntityManager::getRepository('App\OrderCart')->findBy(array("user"=>Auth::user()->getAuthIdentifier()));
+        $cart = $carts[0];
+        $cart->removeProduct($product);
+        return response()->json(array("text"=>"OK"));
     }
 }

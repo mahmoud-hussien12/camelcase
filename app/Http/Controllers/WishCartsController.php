@@ -111,6 +111,10 @@ class WishCartsController extends Controller
     public function destroy($id)
     {
         //
-        return "jjj";
+        $product = EntityManager::find('App\Product', $id);
+        $carts = EntityManager::getRepository('App\WishListCart')->findBy(array("user"=>Auth::user()->getAuthIdentifier()));
+        $cart = $carts[0];
+        $cart->removeProduct($product);
+        return response()->json(array("text"=>"OK"));
     }
 }

@@ -111,18 +111,35 @@ class OrderCart extends Cart
     }
     public function removeProduct(Product $product){
         $i = 0;
-        foreach ($this->orderCartProducts as $p){
-            if($p->getProduct()->getId() == $product->getId()){
-                $p->unit -= 1;
-                if($p->unit <= 0){
+        EntityManager::detach($this);
+        $price = $product->getPrice();
+        if($product->type == "sale"){
+            $price = $product->getNewPrice();
+        }
+        $this->total_price -= $price;
+        EntityManager::merge($this);
+        EntityManager::flush();
+        EntityManager::clear();
+        foreach ($this->getOrderCartProducts() as $orderCartProduct){
+            if($orderCartProduct->getProduct()->getId() == $product->getId()){
+
+                if($orderCartProduct->unit == 1){
+                    EntityManager::remove($orderCartProduct);
                     $this->orderCartProducts->remove($i);
+                }else{
+                    EntityManager::detach($orderCartProduct);
+                    $orderCartProduct->unit -= 1;
+                    EntityManager::merge($orderCartProduct);
                 }
+                EntityManager::flush();
                 break;
             }
             $i++;
         }
+
     }
     public function emptyProducts(){
+        EntityManager::detach($this);
         $this->orderCartProducts = new ArrayCollection;
         $this->total_price = 0.0;
         EntityManager::merge($this);

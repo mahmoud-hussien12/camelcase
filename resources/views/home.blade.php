@@ -24,6 +24,12 @@
                                             <img src="http://via.placeholder.com/150" alt="Lights" style="width:100%">
                                             <div class="caption">
                                                 <p>{{$product->getName()}}</p>
+                                                <p>
+                                                    {{$product->getPrice()}}
+                                                    @if($product->type == "sale")
+                                                        -->{{$product->getNewPrice()}}
+                                                    @endif
+                                                </p>
                                             </div>
                                         </a>
                                         <button ng-click="addToOrderCart('{{$product->getId()}}', '{{csrf_token()}}', '{{Auth::user()->id}}');">Add to Cart</button>

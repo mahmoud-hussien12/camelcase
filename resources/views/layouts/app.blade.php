@@ -17,7 +17,7 @@
     <script src="/css/bootstrap-3.3.7-dist/js/bootstrap.min.js"></script>
     <script src="/js/angular-1.5.11/angular.min.js"></script>
     <script src="/js/jquery.min.3.1.1.js"></script>
-    <script src="js/home.js"></script>
+    <script src="/js/home.js"></script>
 </head>
 <body>
     <div id="app">

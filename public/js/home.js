@@ -48,10 +48,27 @@ var app = angular.module('app', [])
         });
     };
     $scope.removeWishProduct = function (id, token) {
-        alert("nnn");
+        //alert("nnn");
         $.ajax({
             type: "DELETE",
             url: "/wishcarts/"+id+"?_token="+token,
+            processData: false,
+            contentType: false,
+            dataType: "json",
+            success: function (data) {
+                alert(data.text);
+            },
+            error: function (data, err, status) {
+                alert(status);
+            },
+            async: false
+        });
+    }
+    $scope.removeOrderProduct = function (id, token) {
+        //alert("nnn");
+        $.ajax({
+            type: "DELETE",
+            url: "/ordercarts/"+id+"?_token="+token,
             processData: false,
             contentType: false,
             dataType: "json",
