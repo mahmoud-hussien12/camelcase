@@ -28,7 +28,7 @@ class Order
      */
     protected $total_price;
     /**
-     * @ORM\OneToOne(targetEntity="User", mappedBy="orders")
+     * @ORM\OneToOne(targetEntity="User", mappedBy="orders", cascade={"persist"})
      * @ORM\JoinColumn(name="user_id", referencedColumnName="id")
      * @var User
      */
@@ -79,9 +79,16 @@ class Order
      */
     public function getOrderProducts()
     {
-        $result  = DB::select("SELECT * FROM `order_products` WHERE order_id=?", [$this->id]);
-        return $result;
-        //return $this->orderProducts;
+        EntityManager::getRepository('App\Product')->findAll();
+        $array = EntityManager::getRepository('App\OrderProduct')->findBy(array('cart'=>$this->id));
+        $this->orderCartProducts = new ArrayCollection;
+        foreach ($array as $orderProduct){
+            $this->orderProducts->add($orderProduct);
+        }
+        return $this->orderProducts;
+    }
+    public function getProducts(){
+        return $this->orderProducts;
     }
     /**
      * @return mixed
@@ -102,5 +109,8 @@ class Order
         if($noChange){
             $this->orderProducts->add(new OrderProduct($this, $product, 1));
         }
+    }
+    public function addProductAndUnit(OrderProduct $product){
+        $this->orderProducts->add($product);
     }
 }

@@ -3,7 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\Order;
+use App\OrderProduct;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use LaravelDoctrine\ORM\Facades\EntityManager;
 
 class OrdersController extends Controller
 {
@@ -38,10 +41,24 @@ class OrdersController extends Controller
         //
         $carts = EntityManager::getRepository('App\OrderCart')->findBy(array("user"=>Auth::user()->getAuthIdentifier()));
         $cart = $carts[0];
+        EntityManager::detach($cart);
         $order = new Order();
         $order->setTotalPrice($cart->getTotalPrice());
-        //foreach ()
-        //$order->addProduct();
+        $order->setUser(Auth::user());
+        foreach ($cart->getOrderCartProducts() as $orderCartProduct){
+            $order->addProductAndUnit(new OrderProduct($order, $orderCartProduct->getProduct(), $orderCartProduct->unit));
+        }
+        EntityManager::persist($order);
+        EntityManager::flush();
+        $cart->emptyProducts();
+        EntityManager::merge($cart);
+        $orderCartProducts = $cart->getOrderCartProducts();
+        foreach ($orderCartProducts as $orderCartProduct){
+            EntityManager::remove($orderCartProduct);
+        }
+        EntityManager::flush();
+        return view('bill', compact('order'));
+        //
     }
 
     /**

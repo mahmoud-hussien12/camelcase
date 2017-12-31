@@ -10,6 +10,7 @@
                         <div class="row">
                             <div class="col-md-4">
                                 <div class="thumbnail">
+                                    <a ng-click="removeProduct();"><i class="glyphicon glyphicon-remove"></i></a>
                                     <a href="http://via.placeholder.com/150" target="_blank">
                                         <img src="http://via.placeholder.com/150" alt="Lights" style="width:100%">
                                         <div class="caption">
@@ -29,6 +30,7 @@
                         <div class="row">
                             <div class="col-md-4">
                                 <div class="thumbnail">
+                                    <a ng-click="removeProduct();"><i class="glyphicon glyphicon-remove"></i></a>
                                     <a href="http://via.placeholder.com/150" target="_blank">
                                         <img src="http://via.placeholder.com/150" alt="Lights" style="width:100%">
                                         <div class="caption">
